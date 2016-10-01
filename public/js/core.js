@@ -29,3 +29,22 @@ String.format = function() {
   }
   return s;
 }
+
+function attemptLogin(email, password, callback) {
+  var authenticated = false;
+
+  $.getJSON('/js/users.json', {}, function(data){
+    var users = data;
+    for(var i=0; i<users.length; i++) {
+      if(users[i].email == email && users[i].password == password) {
+        setCookie('email', users[i].email);
+        setCookie('user_id', users[i].user_id);
+        authenticated = true;
+      }
+    }
+
+    if (callback && typeof callback == 'function') {
+      callback(authenticated);
+    }
+  });
+}

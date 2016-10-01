@@ -63,7 +63,7 @@
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" id="individualRadio" value="individual" groupname="usertype" checked />
+                <input type="radio" id="individualRadio" value="individual" name="usertype" checked />
                 I'm registerung as an Individual
               </label>
             </div>
@@ -72,7 +72,7 @@
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" id="organizationRadio" value="organization" groupname="usertype" />
+                <input type="radio" id="organizationRadio" value="organization" name="usertype" />
                 I'm registering as an organization
               </label>
             </div>
@@ -113,32 +113,45 @@
         return;
       }
 
-      $('#signinButton').button('loading');
-      $.ajax({
-        url: '/api/signin',
-        type: 'POST',
-        data: {
-          email: email,
-          password: password
-        },
-        success: function(res) {
-          if(res.success) {
-            setCookie('email', email, 365);
-            setTimeout(function(){
-              window.location.href = '/wall';
-            });
-          }
-          else {
-            showError('Error logging in', 2000);
-            $('#signinButton').button('reset');
-          }
-        },
-        error: function() {
-          showError('Error logging in', 2000);
-          $('#signinButton').button('reset');
-        }
-      });
+    //   $('#signinButton').button('loading');
+    //   $.ajax({
+    //     url: '/api/signin',
+    //     type: 'POST',
+    //     data: {
+    //       email: email,
+    //       password: password
+    //     },
+    //     success: function(res) {
+    //       if(res.success) {
+    //         setCookie('email', email, 365);
+    //         setTimeout(function(){
+    //           window.location.href = '/wall';
+    //         });
+    //       }
+    //       else {
+    //         showError('Error logging in', 2000);
+    //         $('#signinButton').button('reset');
+    //       }
+    //     },
+    //     error: function() {
+    //       showError('Error logging in', 2000);
+    //       $('#signinButton').button('reset');
+    //     }
+    //   });
+    // });
+
+    $('#signinButton').button('loading');
+    attemptLogin(email, password, function(res){
+      if(res) {
+        setTimeout(function(){
+          window.location.href = '/wall';
+        }, 2000);
+      } else {
+        showError('Error logging in', 2000);
+        $('#signinButton').button('reset');
+      }
     });
+  });
 
     $('#registerButton').click(function(){
 
