@@ -94,64 +94,49 @@
 <script>
   $(document).ready(function() {
 
-    // var loginCookie = getCookie('email');
-    // if(loginCookie!='') {
-    //   window.location.href = '/wall';
-    // }
-
     $('#signinButton').click(function(){
+
       var email = $('#emailTextInput').val();
       var password = $('#passwordTextInput').val();
 
-      if(email=='' || password=='') {
-        showError('Email and password are required');
+      if(email == '' || password == '') {
+        showError('Email and password are required', 2000);
         return;
       }
 
       if(email.indexOf('@') <= -1) {
-        showError('Email is invalid');
+        showError('Email is invalid', 2000);
         return;
       }
 
-    //   $('#signinButton').button('loading');
-    //   $.ajax({
-    //     url: '/api/signin',
-    //     type: 'POST',
-    //     data: {
-    //       email: email,
-    //       password: password
-    //     },
-    //     success: function(res) {
-    //       if(res.success) {
-    //         setCookie('email', email, 365);
-    //         setTimeout(function(){
-    //           window.location.href = '/wall';
-    //         });
-    //       }
-    //       else {
-    //         showError('Error logging in', 2000);
-    //         $('#signinButton').button('reset');
-    //       }
-    //     },
-    //     error: function() {
-    //       showError('Error logging in', 2000);
-    //       $('#signinButton').button('reset');
-    //     }
-    //   });
-    // });
+      $('#signinButton').button('loading');
+      $.ajax({
+        url: '/api/signin',
+        type: 'POST',
+        data: {
+          email: email,
+          password: password
+        },
+        success: function(res) {
+          if(res) {
+            setCookie('email', res.user.email);
+            setCookie('user_id', res.user.user_id);
+            setTimeout(function(){
+              window.location.href = '/wall';
+            });
+          }
+          else {
+            showError('Error logging in', 2000);
+            $('#signinButton').button('reset');
+          }
+        },
+        error: function() {
+          showError('Error logging in', 2000);
+          $('#signinButton').button('reset');
+        }
+      });
 
-    $('#signinButton').button('loading');
-    attemptLogin(email, password, function(res){
-      if(res) {
-        setTimeout(function(){
-          window.location.href = '/wall';
-        }, 2000);
-      } else {
-        showError('Error logging in', 2000);
-        $('#signinButton').button('reset');
-      }
     });
-  });
 
     $('#registerButton').click(function(){
 
@@ -184,7 +169,9 @@
           $('#registerButton').button('reset');
         }
       });
+
     });
+
   });
 </script>
 {/script}
