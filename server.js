@@ -12,6 +12,6 @@ var server;
 
 server = http.createServer(app);
 server.listen(process.env.PORT || 8000);
-server.on('Listening', function () {
+server.on('listening...', function () {
   winston.info('FoodBuddy is now accessible on http://localhost:%d', this.address().port);
 });
