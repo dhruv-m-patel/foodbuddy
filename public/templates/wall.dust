@@ -1,0 +1,38 @@
+{>"layouts/user" /}
+
+{<page}
+
+  {?hits}
+  <div class="form-group">
+    <h3>We found there are following listings available from food donors</h3>
+    <p class="text-info">Please hit "Collect" if you are interested in collecting food items to prevent food waste.</p>
+  </div>
+  <div class="row">
+    {#hits}
+    <div class="col-sm-6 col-md-3">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          user name
+        </div>
+        <div class="panel-body">
+          description
+
+          address
+
+          food type
+
+          Request drop-off / Promise
+        </div>
+      </div>
+
+    </div>
+    {/hits}
+  </div>
+  {/hits}
+
+{/page}
+
+{<script}
+
+{/script}

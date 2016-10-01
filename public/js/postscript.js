@@ -1,20 +1,27 @@
 function showSuccess(message) {
-  var settings = {
-  	message: message,
-  	type: 'success',
+  $.notify({
+    message: String.format('<span class="glyphicon glyphicon-ok-sign"></span> {0}', message)
+  },{
+    type: 'success'
+  }, {
     delay: 2000
-  };
-  $('body').notify(settings);
+  });
 }
 
 function showError(message, delay) {
-  var settings = {
-  	message: message,
-  	type: 'danger'
-  };
   if(delay) {
-    settings.delay = delay;
+    $.notify({
+      message: String.format('<span class="glyphicon glyphicon-warning-sign"></span> {0}', message)
+    },{
+      type: 'danger'
+    }, {
+      delay: delay
+    });
+  } else {
+    $.notify({
+      message: String.format('<span class="glyphicon glyphicon-warning-sign"></span> {0}', message)
+    },{
+      type: 'danger'
+    });
   }
-
-  $('body').notify(settings);
 }
