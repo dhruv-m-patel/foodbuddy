@@ -2,6 +2,13 @@
 
 {<body}
 
+  <script>
+    var loginCookie = getCookie('email');
+    if(loginCookie) {
+      window.location.href = '/wall';
+    }
+  </script>
+
   <div class="row">
     <div class="col-sm-offset-2 col-sm-8 col-md-offset-4 col-md-4">
 
@@ -120,7 +127,7 @@
         success: function(res) {
           if(res) {
             setCookie('email', res.user.email);
-            setCookie('user_id', res.user.user_id);
+            setCookie('user_name', res.user.user_name);
             setTimeout(function(){
               window.location.href = '/wall';
             });

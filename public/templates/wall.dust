@@ -1,16 +1,82 @@
 {>"layouts/user" /}
 
 {<page}
+
+  <div class="form-group">
+    <button type="button" id="donateFoodButton" class="btn btn-block btn-lg btn-primary">
+      Donate Food
+    </button>
+  </div>
+
+  <p>&nbsp;</p>
+
   <div id="wallContent">
     <div class="alert alert-success">
       Loading...
     </div>
   </div>
+
+  <div id="donateFoodModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Donate Food</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <textarea id="foodPostDescription" class="form-control" maxlength="200" placeholder="Provide some description about you are donating" rows="4"></textarea>
+          </div>
+
+          <div class="form-group">
+            <div class='input-group date' id='expiryDateTimePicker'>
+                <input type='text' class="form-control" placeholder="Set food expiration date and time" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="password" id="registerPasswordTextInput" class="form-control" maxlength="20" placeholder="Password" />
+          </div>
+
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" id="individualRadio" value="individual" name="usertype" checked />
+                I'm registerung as an Individual
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" id="organizationRadio" value="organization" name="usertype" />
+                I'm registering as an organization
+              </label>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="registerButton" type="button" class="btn btn-primary" data-loading-text="Registering...">
+            Register
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 {/page}
 
 {<script}
 <script>
   $(document).ready(function(){
+
+    $('#expiryDateTimePicker').datetimepicker();
 
     $.ajax({
       url: '/api/wall',
