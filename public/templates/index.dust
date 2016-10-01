@@ -94,10 +94,10 @@
 <script>
   $(document).ready(function() {
 
-    var loginCookie = getCookie('email');
-    if(loginCookie!='') {
-      window.location.href = '/wall';
-    }
+    // var loginCookie = getCookie('email');
+    // if(loginCookie!='') {
+    //   window.location.href = '/wall';
+    // }
 
     $('#signinButton').click(function(){
       var email = $('#emailTextInput').val();
@@ -161,7 +161,7 @@
         data: request,
         success: function(){
           showSuccess('Registered successflly, logging you in...');
-          setCookie('email', email, 365);
+          setCookie('email', request.email, 365);
           setTimeout(function(){
             window.location.href = '/wall';
           });

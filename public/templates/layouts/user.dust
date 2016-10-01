@@ -2,8 +2,15 @@
 
 {<body}
 
+  <script>
+    var loginCookie = getCookie('email');
+    if(!loginCookie) {
+      window.location.href = '/login';
+    }
+  </script>
+
   <div class="form-group">
-    <button type="button" id="signoutButton" class="pull-right btn btn-default">
+    <button type="button" id="signoutButton" class="pull-right btn btn-default" onclick="logout();">
       <span class="glyphicon glyphicon-off"></span>
       Sign Out
     </button>

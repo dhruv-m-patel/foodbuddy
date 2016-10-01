@@ -1,38 +1,60 @@
 {>"layouts/user" /}
 
 {<page}
-
-  {?hits}
-  <div class="form-group">
-    <h3>We found there are following listings available from food donors</h3>
-    <p class="text-info">Please hit "Collect" if you are interested in collecting food items to prevent food waste.</p>
-  </div>
-  <div class="row">
-    {#hits}
-    <div class="col-sm-6 col-md-3">
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          user name
-        </div>
-        <div class="panel-body">
-          description
-
-          address
-
-          food type
-
-          Request drop-off / Promise
-        </div>
-      </div>
-
+  <div id="wallContent">
+    <div class="alert alert-success">
+      Loading...
     </div>
-    {/hits}
   </div>
-  {/hits}
-
 {/page}
 
 {<script}
+<script>
+  $(document).ready(function(){
 
+    $.ajax({
+      url: '/api/wall',
+      type: 'GET',
+      success: function(res){
+        buildWallContent(res);
+      },
+      error: function(){
+        $('#wallContent').html('<div class="alert alert-danger">Error loading wall</div>');
+      }
+    });
+
+    function buildWallContent(wall) {
+
+      var html = [];
+      for(var i=0; i<wall.length; i++) {
+        html.push(getWallPostHtml(wall[i]));
+      }
+      $('#wallContent').html(html.join(''));
+
+    }
+
+    function getWallPostHtml(wallPostItem) {
+      var wallPost = wallPostItem._source;
+      var html = [];
+      html.push(String.format('<div class="panel panel-{0}">', (wallPost.promised? 'danger': 'success')));
+      html.push(String.format(' <div class="panel-heading">{0}</div>', wallPost.title));
+      html.push(String.format(' <div class="panel-content">');
+      html.push(String.format('   <div class="form-group"><strong>Food Categories:</strong> {0}</div>', wallPost.food_types));
+      html.push(String.format('   <div class="form-group"><strong>Available until:</strong> {0}</div>', wallPost.expire_time));
+      html.push(String.format('   <div class="form-group"><strong>Address:</strong> {0}</div>', wallPost.pickup_address));
+      html.push(String.format('   <div class="form-group">{0}</div>', wallPost.description));
+      html.push(String.format('   <div class="form-group"><small class="text-muted">{0}</span></div>', wallPost.user_name));
+      if(!wallPost.promised) {
+        html.push(String.format('   <div class="form-group"><button type="button" data-wall-post-id="{0}" class="btn btn-block btn-primary">Reserve</button></div>', wallPost.wallPostItem._id));
+      }
+      else {
+        html.push(String.format('   <div class="form-group text-danger"><strong>Item has been promised</strong></div>', wallPost.wallPostItem._id));
+      }
+      html.push('  </div>');
+      html.push('</div>');
+      return html.join('');
+    }
+
+  });
+</script>
 {/script}
