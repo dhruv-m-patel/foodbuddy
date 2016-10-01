@@ -63,7 +63,7 @@
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" id="individualRadio" value="individual" groupname="usertype" checked />
+                <input type="radio" id="individualRadio" value="individual" name="usertype" checked />
                 I'm registerung as an Individual
               </label>
             </div>
@@ -72,7 +72,7 @@
           <div class="form-group">
             <div class="radio">
               <label>
-                <input type="radio" id="organizationRadio" value="organization" groupname="usertype" />
+                <input type="radio" id="organizationRadio" value="organization" name="usertype" />
                 I'm registering as an organization
               </label>
             </div>
@@ -94,22 +94,18 @@
 <script>
   $(document).ready(function() {
 
-    // var loginCookie = getCookie('email');
-    // if(loginCookie!='') {
-    //   window.location.href = '/wall';
-    // }
-
     $('#signinButton').click(function(){
+
       var email = $('#emailTextInput').val();
       var password = $('#passwordTextInput').val();
 
-      if(email=='' || password=='') {
-        showError('Email and password are required');
+      if(email == '' || password == '') {
+        showError('Email and password are required', 2000);
         return;
       }
 
       if(email.indexOf('@') <= -1) {
-        showError('Email is invalid');
+        showError('Email is invalid', 2000);
         return;
       }
 
@@ -122,8 +118,9 @@
           password: password
         },
         success: function(res) {
-          if(res.success) {
-            setCookie('email', email, 365);
+          if(res) {
+            setCookie('email', res.user.email);
+            setCookie('user_id', res.user.user_id);
             setTimeout(function(){
               window.location.href = '/wall';
             });
@@ -138,6 +135,7 @@
           $('#signinButton').button('reset');
         }
       });
+
     });
 
     $('#registerButton').click(function(){
@@ -171,7 +169,9 @@
           $('#registerButton').button('reset');
         }
       });
+
     });
+
   });
 </script>
 {/script}

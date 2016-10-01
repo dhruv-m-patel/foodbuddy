@@ -38,7 +38,7 @@
       var html = [];
       html.push(String.format('<div class="panel panel-{0}">', (wallPost.promised? 'danger': 'success')));
       html.push(String.format(' <div class="panel-heading">{0}</div>', wallPost.title));
-      html.push(String.format(' <div class="panel-content">');
+      html.push(String.format(' <div class="panel-content">'));
       html.push(String.format('   <div class="form-group"><strong>Food Categories:</strong> {0}</div>', wallPost.food_types));
       html.push(String.format('   <div class="form-group"><strong>Available until:</strong> {0}</div>', wallPost.expire_time));
       html.push(String.format('   <div class="form-group"><strong>Address:</strong> {0}</div>', wallPost.pickup_address));

@@ -24,7 +24,7 @@
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.js"></script>
 
     <div class="jumbotron app-logo-container">
       <div class="container">
@@ -46,10 +46,10 @@
     {+script /}
 
     <script>
-      var loggedInLabel = $('loggedinAs');
+      var loggedInLabel = $('#loggedInAs');
       if(loggedInLabel) {
         var loggedInUserName = getCookie('email');
-        $(loggedinAs).html(String.format('Logged in as <strong>{0}</strong>', loggedInUserName));
+        $(loggedInLabel).html(String.format('Logged in as <strong>{0}</strong>', loggedInUserName));
       }
 
       function logout() {
