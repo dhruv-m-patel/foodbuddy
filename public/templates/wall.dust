@@ -3,9 +3,18 @@
 {<page}
 
   <div class="form-group">
-    <button type="button" id="donateFoodButton" class="btn btn-block btn-lg btn-primary">
-      Donate Food
-    </button>
+    <div class="row">
+      <div class="col-sm-10">
+        <button type="button" id="donateFoodButton" class="btn btn-block btn-lg btn-primary" data-target="#donateFoodModal" data-toggle="modal" >
+          Donate Food
+        </button>
+      </div>
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-block btn-lg btn-default" >
+          My Favorites
+        </button>
+      </div>
+    </div>
   </div>
 
   <p>&nbsp;</p>
@@ -26,8 +35,17 @@
         <div class="modal-body">
 
           <div class="form-group">
+            <input type="text" id="foodPostTitle" class="form-control" maxlength="20" placeholder="Title for your wallpost" />
+          </div>
+
+          <div class="form-group">
             <textarea id="foodPostDescription" class="form-control" maxlength="200" placeholder="Provide some description about you are donating" rows="4"></textarea>
           </div>
+
+          <div class="form-group">
+            <input type="text" id="foodPickupLocation" class="form-control" maxlength="100" placeholder="Pickup Location" />
+          </div>
+
 
           <div class="form-group">
             <div class='input-group date' id='expiryDateTimePicker'>
@@ -39,32 +57,40 @@
           </div>
 
           <div class="form-group">
-            <input type="password" id="registerPasswordTextInput" class="form-control" maxlength="20" placeholder="Password" />
+            <label class="checkbox-inline">
+              <input type="checkbox" id="dropOffAvailable" checked="false" />
+              Drop-off available?
+            </label>
           </div>
 
           <div class="form-group">
+            <label>Food type</label>
             <div class="radio">
               <label>
-                <input type="radio" id="individualRadio" value="individual" name="usertype" checked />
-                I'm registerung as an Individual
+                <input type="radio" id="veggiesRadio" value="veggies" name="foodtype" />
+                Veggies
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" id="cookedFoodRadio" value="cooked food" name="foodtype" />
+                Cooked Food
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" id="packedFoodRadio" value="uncooked food" name="foodtype" />
+                Packed Food
               </label>
             </div>
           </div>
 
-          <div class="form-group">
-            <div class="radio">
-              <label>
-                <input type="radio" id="organizationRadio" value="organization" name="usertype" />
-                I'm registering as an organization
-              </label>
-            </div>
-          </div>
 
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="registerButton" type="button" class="btn btn-primary" data-loading-text="Registering...">
-            Register
+          <button id="donateButton" type="button" class="btn btn-primary" data-loading-text="Processing...">
+            Donate
           </button>
         </div>
       </div><!-- /.modal-content -->
@@ -91,35 +117,101 @@
 
     function buildWallContent(wall) {
 
-      var html = [];
-      for(var i=0; i<wall.length; i++) {
-        html.push(getWallPostHtml(wall[i]));
+      if(wall) {
+
+        if(wall.length == 0) {
+          $('#wallContent').html('<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> No data found</div>');
+          return;
+        }
+
+        var html = [];
+        for(var i=0; i<wall.length; i++) {
+          var wallHtml = getWallPostHtml(wall[i]);
+          html.push(String.format('<div class="col-sm-12">{0}</div>', wallHtml));
+        }
+        $('#wallContent').html(String.format('<div class="row">{0}</div>', html.join('')));
+
+        $('.btn-reserve').each(function(){
+          $(this).click(function(){
+            $(this).html('Reserving...');
+            var self = this;
+            setTimeout(function(){
+              showSuccess('Food reserved for pickup');
+              $(self).replaceWith('<strong class="text-danger">Item has been promised</strong>');
+            }, 2000);
+          });
+        });
+
+      } else {
+        $('#wallContent').html('<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Error loading wall posts</div>');
+        return;
       }
-      $('#wallContent').html(html.join(''));
 
     }
 
     function getWallPostHtml(wallPostItem) {
-      var wallPost = wallPostItem._source;
+      var wallPost = wallPostItem;
       var html = [];
       html.push(String.format('<div class="panel panel-{0}">', (wallPost.promised? 'danger': 'success')));
       html.push(String.format(' <div class="panel-heading">{0}</div>', wallPost.title));
-      html.push(String.format(' <div class="panel-content">'));
+      html.push(String.format(' <div class="panel-content" style="padding: 20px;">'));
       html.push(String.format('   <div class="form-group"><strong>Food Categories:</strong> {0}</div>', wallPost.food_types));
       html.push(String.format('   <div class="form-group"><strong>Available until:</strong> {0}</div>', wallPost.expire_time));
       html.push(String.format('   <div class="form-group"><strong>Address:</strong> {0}</div>', wallPost.pickup_address));
-      html.push(String.format('   <div class="form-group">{0}</div>', wallPost.description));
-      html.push(String.format('   <div class="form-group"><small class="text-muted">{0}</span></div>', wallPost.user_name));
+      html.push(String.format('   <div class="form-group" title="{0}">{1}</div>', wallPost.description, wallPost.description));
+      html.push(String.format('   <div class="form-group"><small class="text-muted">{0}</small></div>', wallPost.user_name));
       if(!wallPost.promised) {
-        html.push(String.format('   <div class="form-group"><button type="button" data-wall-post-id="{0}" class="btn btn-block btn-primary">Reserve</button></div>', wallPost.wallPostItem._id));
+        html.push(String.format('   <div class="form-group"><button type="button" data-wall-post-id="{0}" class="btn btn-block btn-success btn-reserve">Reserve</button></div>', wallPost._id));
       }
       else {
-        html.push(String.format('   <div class="form-group text-danger"><strong>Item has been promised</strong></div>', wallPost.wallPostItem._id));
+        html.push(String.format('   <div class="form-group text-danger"><strong>Item has been promised</strong></div>', wallPost._id));
       }
       html.push('  </div>');
       html.push('</div>');
       return html.join('');
     }
+
+    $('#donateButton').click(function(){
+
+      $('#donateButton').button('loading');
+
+      var foodTypes = [];
+      if ($('#veggiesRadio').checked) { foodTypes.push('veggies') };
+      if ($('#coockedFoodRadio').checked) { foodTypes.push('cooked_food') };
+      if ($('#packedFoodRadio').checked) { foodTypes.push('packe_food') };
+
+      var request = {
+        user_id: '',
+        user_name: getCookie('user_name'),
+        title: $('#foodPostTitle').val(),
+        description: $('#foodPostDescription').val(),
+        expiry_time: $('#expiryDateTimePicker').val(),
+        pickup_address: $('#foodPickupLocation').val(),
+        food_types: foodTypes,
+        is_drop_off: $('#dropOffAvailable').checked,
+        promised: false
+      };
+
+      $.ajax({
+        url: '/api/foodpost',
+        type: 'POST',
+        data: request,
+        succes: function(res) {
+          if(res) {
+            showSuccess('Wall post created. Thanks so much for donating food, keep up the good work!');
+            $('#donateButton').button('reset');
+          }
+          else {
+            showError('Error processing your request');
+            $('#donateButton').button('reset');
+          }
+        },
+        error: function() {
+          showError('Error processing your request');
+          $('#donateButton').button('reset');
+        }
+      })
+    });
 
   });
 </script>
