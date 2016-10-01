@@ -1,0 +1,14 @@
+{
+  "generator-kraken": {
+    "taskModule": "grunt",
+    "lintModule": "eslint",
+    "description": "Helping food donors and food collectors find each other and prevent food waste",
+    "author": "Dhruv Patel, Khantil Patel, Manali Gaikwad, Manas Prasher",
+    "templateModule": false,
+    "i18n": false,
+    "componentPackager": false,
+    "cssModule": "stylus",
+    "jsModule": "requirejs",
+    "useJson": null
+  }
+}
