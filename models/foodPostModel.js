@@ -16,24 +16,33 @@ var elasticsearch = require('elasticsearch');
  });
 
 module.exports.save = function (req, res){
-    var name  = req.body.name;
-    var email = req.body.email;
-    var password = req.body.password;
-    var user_type = req.body.user_type;
+    var title  = req.body.title;
+    var user_id  = req.body.user_id;
+    var user_name  = req.body.user_name;
+    var food_types = req.body.food_types;
+    var pickup_address = req.body.pickup_address;
+    var is_drop_off = req.body.drop_off;
+    var expire_time = req.body.expire_time;
+    var description = req.body.description;
+
 
     // ElasticSearch Expects JSON not Querystring!
 var data = JSON.stringify({
-  "name" :name,
-  "email" :email,
-  "password" :password,
-  "user_type" :user_type
+  "title" :title,
+  "user_id":user_id,
+  "user_name":user_name,
+  "food_types" :food_types,
+  "pickup_address" :pickup_address,
+  "is_drop_off" :is_drop_off,
+  "expire_time" :expire_time,
+  "description" :description
 });
 
 // An object of options to indicate where to post to
 var post_options = {
     host: 'ec2-54-89-137-160.compute-1.amazonaws.com',
     port: '9200',
-    path: '/foodbuddy/register',
+    path: '/foodbuddy/foodpost',
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -41,10 +50,12 @@ var post_options = {
     }
 };
 
+var response =null;
 // Set up the request
 var post_req = http.request(post_options, function(res) {
 
     res.on('data', function (chunk) {
+        response = chunk;
         console.log('Response: ' + chunk);
     });
 });
@@ -52,5 +63,5 @@ var post_req = http.request(post_options, function(res) {
 post_req.write(data);
 post_req.end();
 
-return data;
+return response;
 }

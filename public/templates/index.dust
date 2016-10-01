@@ -49,15 +49,15 @@
         <div class="modal-body">
 
           <div class="form-group">
-            <input type="text" id="nameTextInput" class="form-control" maxlength="20" placeholder="Name" />
+            <input type="text" id="registerNameTextInput" class="form-control" maxlength="20" placeholder="Name" />
           </div>
 
           <div class="form-group">
-            <input type="text" id="emailTextInput" class="form-control" maxlength="100" placeholder="Email" />
+            <input type="text" id="registerEmailTextInput" class="form-control" maxlength="100" placeholder="Email" />
           </div>
 
           <div class="form-group">
-            <input type="password" id="passwordTextInput" class="form-control" maxlength="20" placeholder="Password" />
+            <input type="password" id="registerPasswordTextInput" class="form-control" maxlength="20" placeholder="Password" />
           </div>
 
           <div class="form-group">
@@ -81,7 +81,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Register</button>
+          <button id="registerButton" type="button" class="btn btn-primary" data-loading-text="Registering...">
+            Register
+          </button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -91,6 +93,12 @@
 {<script}
 <script>
   $(document).ready(function() {
+
+    var loginCookie = getCookie('email');
+    if(loginCookie!='') {
+      window.location.href = '/wall';
+    }
+
     $('#signinButton').click(function(){
       var email = $('#emailTextInput').val();
       var password = $('#passwordTextInput').val();
@@ -117,7 +125,7 @@
           if(res.success) {
             setCookie('email', email, 365);
             setTimeout(function(){
-              window.location.href = '/dashboard';
+              window.location.href = '/wall';
             });
           }
           else {
@@ -128,6 +136,39 @@
         error: function() {
           showError('Error logging in', 2000);
           $('#signinButton').button('reset');
+        }
+      });
+    });
+
+    $('#registerButton').click(function(){
+
+      var request = {
+        name: $('#registerNameTextInput').val(),
+        email: $('#registerEmailTextInput').val(),
+        password: $('#registerPasswordTextInput').val(),
+        user_type: ($('#individualRadio').checked? 'individual': 'organization')
+      };
+
+      if(request.name=='' || request.email=='' || request.password=='') {
+        showError('All fields are required', 2000);
+        return;
+      }
+
+      $('#registerButton').button('loading');
+      $.ajax({
+        url: '/api/registration',
+        type: 'POST',
+        data: request,
+        success: function(){
+          showSuccess('Registered successflly, logging you in...');
+          setCookie('email', email, 365);
+          setTimeout(function(){
+            window.location.href = '/wall';
+          });
+        },
+        error: function(){
+          showError('Error registering', 2000);
+          $('#registerButton').button('reset');
         }
       });
     });
