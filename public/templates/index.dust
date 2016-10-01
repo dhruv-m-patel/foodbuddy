@@ -33,58 +33,104 @@
       <p>&nbsp;</p>
 
       <div class="form-group">
-        Haven't registered yet? <a href="/signup">sign up!</a>
+        Haven't registered yet? <a data-toggle="modal" data-target="#signupModal">sign up!</a>
       </div>
 
     </div>
   </div>
 
-  <script>
+  <div id="signupModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Signup</h4>
+        </div>
+        <div class="modal-body">
 
-    $(document).ready(function() {
+          <div class="form-group">
+            <input type="text" id="nameTextInput" class="form-control" maxlength="20" placeholder="Name" />
+          </div>
 
-      $('#signinButton').click(function(){
-        var email = $('#emailTextInput').val();
-        var password = $('#passwordTextInput').val();
+          <div class="form-group">
+            <input type="text" id="emailTextInput" class="form-control" maxlength="100" placeholder="Email" />
+          </div>
 
-        if(email=='' || password=='') {
-          alert('Email and password are required');
-          return;
-        }
+          <div class="form-group">
+            <input type="password" id="passwordTextInput" class="form-control" maxlength="20" placeholder="Password" />
+          </div>
 
-        if(email.indexOf('@') <= -1) {
-          alert('Email is invalid');
-          return;
-        }
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" id="individualRadio" value="individual" groupname="usertype" checked />
+                I'm registerung as an Individual
+              </label>
+            </div>
+          </div>
 
-        $('#signinButton').button('loading');
-        $.ajax({
-          url: '/api/signin',
-          type: 'POST',
-          data: {
-            email: email,
-            password: password
-          },
-          success: function(res) {
-            if(res.success) {
-              setCookie('email', email, 365);
-              setTimeout(function(){
-                window.location.href = '/dashboard';
-              });
-            }
-            else {
-              alert('Error logging in');
-              $('#signinButton').button('reset');
-            }
-          },
-          error: function() {
-            alert('Error logging in');
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" id="organizationRadio" value="organization" groupname="usertype" />
+                I'm registering as an organization
+              </label>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Register</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+{/body}
+
+{<script}
+<script>
+  $(document).ready(function() {
+    $('#signinButton').click(function(){
+      var email = $('#emailTextInput').val();
+      var password = $('#passwordTextInput').val();
+
+      if(email=='' || password=='') {
+        showError('Email and password are required');
+        return;
+      }
+
+      if(email.indexOf('@') <= -1) {
+        showError('Email is invalid');
+        return;
+      }
+
+      $('#signinButton').button('loading');
+      $.ajax({
+        url: '/api/signin',
+        type: 'POST',
+        data: {
+          email: email,
+          password: password
+        },
+        success: function(res) {
+          if(res.success) {
+            setCookie('email', email, 365);
+            setTimeout(function(){
+              window.location.href = '/dashboard';
+            });
+          }
+          else {
+            showError('Error logging in', 2000);
             $('#signinButton').button('reset');
           }
-        });
+        },
+        error: function() {
+          showError('Error logging in', 2000);
+          $('#signinButton').button('reset');
+        }
       });
     });
-
-  </script>
-
-{/body}
+  });
+</script>
+{/script}
