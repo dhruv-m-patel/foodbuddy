@@ -10,7 +10,7 @@
         "spec": ">=2.3.2 <2.4.0",
         "type": "range"
       },
-      "/Users/dpatel/foodbuddy/FoodBuddy/node_modules/shush/node_modules/caller"
+      "/Users/dpatel/foodbuddy/node_modules/shush/node_modules/caller"
     ]
   ],
   "_from": "tape@>=2.3.2 <2.4.0",
@@ -34,6 +34,7 @@
     "type": "range"
   },
   "_requiredBy": [
+    "/freshy/caller",
     "/meddleware/caller",
     "/shortstop-resolve/caller",
     "/shush/caller"
@@ -42,7 +43,7 @@
   "_shasum": "2e7ce0a31df09f8d6851664a71842e0ca5057af7",
   "_shrinkwrap": null,
   "_spec": "tape@~2.3.2",
-  "_where": "/Users/dpatel/foodbuddy/FoodBuddy/node_modules/shush/node_modules/caller",
+  "_where": "/Users/dpatel/foodbuddy/node_modules/shush/node_modules/caller",
   "author": {
     "name": "James Halliday",
     "email": "mail@substack.net",

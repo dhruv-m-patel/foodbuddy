@@ -13,11 +13,14 @@
   "dependencies": {
     "construx": "^1.0.0",
     "construx-copier": "^1.0.0",
+    "construx-dustjs": "^1.1.0",
     "construx-stylus": "^1.0.0",
     "eslint": "^1.10.3",
     "express": "^4.12.2",
     "kraken-js": "^2.0.0",
-    "requirejs": "^2.3.2"
+    "makara": "^2.0.3",
+    "requirejs": "^2.3.2",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -28,9 +31,12 @@
     "grunt-contrib-stylus": "^0.21.0",
     "grunt-copy-browser-modules": "^5.0.1",
     "grunt-copy-to": "0.0.10",
+    "grunt-dustjs": "^1.4.0",
     "grunt-mocha-cli": "^1.14.0",
+    "krakenjs-handlebars": "^0.1.4",
     "mocha": "^1.18.0",
-    "supertest": "^0.9.0"
+    "supertest": "^0.9.0",
+    "winston": "^2.2.0"
   },
   "browserPackage": {
     "overrides": {
