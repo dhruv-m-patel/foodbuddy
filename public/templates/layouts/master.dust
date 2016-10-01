@@ -44,5 +44,18 @@
     <script src="../../js/postscript.js"></script>
 
     {+script /}
+
+    <script>
+      var loggedInLabel = $('loggedinAs');
+      if(loggedInLabel) {
+        var loggedInUserName = getCookie('email');
+        $(loggedinAs).html(String.format('Logged in as <strong>{0}</strong>', loggedInUserName));
+      }
+
+      function logout() {
+        clearCookie('email');
+        setTimeout(function(){ window.location.href='/login'; }, 1000);
+      }
+    </script>
   </body>
 </html>
