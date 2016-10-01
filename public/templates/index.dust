@@ -1,5 +1,136 @@
 {>"layouts/master" /}
 
 {<body}
-    <h1>Hello, {name}</h1>
+
+  <div class="row">
+    <div class="col-sm-offset-2 col-sm-8 col-md-offset-4 col-md-4">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span class="glyphicon glyphicon-user"></span>
+          Sign In
+        </div>
+        <div class="panel-body">
+
+          <div class="form-group">
+            <input type="email" id="emailTextInput" maxlength="100" placeholder="email" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <input type="password" id="passwordTextInput" maxlength="20" placeholder="password" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <button type="button" id="signinButton" class="btn btn-block" data-loading-text="Signing in...">
+              <span class="glyphicon glyphicon-log-out"></span>
+              Sign In
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <p>&nbsp;</p>
+
+      <div class="form-group">
+        Haven't registered yet? <a data-toggle="modal" data-target="#signupModal">sign up!</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="signupModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Signup</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <input type="text" id="nameTextInput" class="form-control" maxlength="20" placeholder="Name" />
+          </div>
+
+          <div class="form-group">
+            <input type="text" id="emailTextInput" class="form-control" maxlength="100" placeholder="Email" />
+          </div>
+
+          <div class="form-group">
+            <input type="password" id="passwordTextInput" class="form-control" maxlength="20" placeholder="Password" />
+          </div>
+
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" id="individualRadio" value="individual" groupname="usertype" checked />
+                I'm registerung as an Individual
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" id="organizationRadio" value="organization" groupname="usertype" />
+                I'm registering as an organization
+              </label>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Register</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 {/body}
+
+{<script}
+<script>
+  $(document).ready(function() {
+    $('#signinButton').click(function(){
+      var email = $('#emailTextInput').val();
+      var password = $('#passwordTextInput').val();
+
+      if(email=='' || password=='') {
+        showError('Email and password are required');
+        return;
+      }
+
+      if(email.indexOf('@') <= -1) {
+        showError('Email is invalid');
+        return;
+      }
+
+      $('#signinButton').button('loading');
+      $.ajax({
+        url: '/api/signin',
+        type: 'POST',
+        data: {
+          email: email,
+          password: password
+        },
+        success: function(res) {
+          if(res.success) {
+            setCookie('email', email, 365);
+            setTimeout(function(){
+              window.location.href = '/dashboard';
+            });
+          }
+          else {
+            showError('Error logging in', 2000);
+            $('#signinButton').button('reset');
+          }
+        },
+        error: function() {
+          showError('Error logging in', 2000);
+          $('#signinButton').button('reset');
+        }
+      });
+    });
+  });
+</script>
+{/script}
