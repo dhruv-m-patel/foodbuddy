@@ -15,10 +15,12 @@
     "construx-copier": "^1.0.0",
     "construx-dustjs": "^1.1.0",
     "construx-stylus": "^1.0.0",
+    "elasticsearch": "^11.0.1",
     "eslint": "^1.10.3",
     "express": "^4.12.2",
     "kraken-js": "^2.0.0",
     "makara": "^2.0.3",
+    "nconf": "^0.8.4",
     "requirejs": "^2.3.2",
     "winston": "^2.2.0"
   },

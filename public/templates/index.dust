@@ -21,7 +21,7 @@
           </div>
 
           <div class="form-group">
-            <button type="button" id="signinButton" class="btn btn-block" data-loading-text="Signing in...">
+            <button type="button" id="signinButton" class="btn btn-block btn-success" data-loading-text="Signing in...">
               <span class="glyphicon glyphicon-log-out"></span>
               Sign In
             </button>

@@ -1,14 +1,14 @@
 {
 
-    
+
     "express": {
         "view cache": false,
         "view engine": "js",
         "views": "path:./.build/templates"
     },
-    
 
-    
+
+
     "view engines": {
         "js": {
             "module": "makara",
@@ -23,19 +23,32 @@
 
     "dust": {
         "helpers": [
-    
+
         ]
     },
-    
 
-    
+
+
 
     "specialization": {
     },
 
     "middleware": {
 
-        
+      "appsec": {
+          "priority": 110,
+          "module": {
+              "name": "lusca",
+              "arguments": [
+                  {
+                      "csrf": false,
+                      "xframe": "SAMEORIGIN",
+                      "p3p": false,
+                      "csp": false
+                  }
+              ]
+          }
+      },
         "makara": {
             "priority": 100,
             "enabled": true,
@@ -49,7 +62,7 @@
                 ]
             }
         },
-        
+
 
         "static": {
             "module": {
