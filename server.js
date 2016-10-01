@@ -2,7 +2,7 @@
 
 var app = require('./index');
 var http = require('http');
-
+var winston = require('winston');
 
 var server;
 
@@ -13,5 +13,5 @@ var server;
 server = http.createServer(app);
 server.listen(process.env.PORT || 8000);
 server.on('Listening', function () {
-    console.log('FoodBuddy is now accessible on http://localhost:%d', this.address().port);
+  winston.info('FoodBuddy is now accessible on http://localhost:%d', this.address().port);
 });
