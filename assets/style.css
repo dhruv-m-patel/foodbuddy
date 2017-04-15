@@ -1,9 +1,10 @@
 body {
   font-family: Roboto, Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   background-color: #F5F5F5;
   color: #333333;
-  margin: 0;
+  width: 980px;
+  margin: 0 auto;
   padding: 20px;
 }
 
@@ -17,4 +18,10 @@ h1, h2, h3, h4, h5 {
 
 .subtitle {
   font-size: 22px;
+}
+
+pre {
+  font-family: "courier new", sans-serif;
+  font-size: 14px;
+  background-color: #e5e5e5;
 }
